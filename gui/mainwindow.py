@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
     fileFilter = 'PNG (*.png);;JPEG (*.jpg *.jpeg);;TIFF (*.tif)'
     
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
+        super(MainWindow, self).__init__()
 
         # GUI definition
         self.centralWidget = QWidget(self)
@@ -86,8 +86,6 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(_translate("MainWindow", "DeepFake detector"))
         self.openFileButton.setText(_translate("MainWindow", "Open File"))
         self.clearViewButton.setText(_translate("MainWindow", "Clear"))
-
-        # self.temporaryLabel.setText(_translate("MainWindow", "HereWouldBeImage"))
     
     # Custom palette if needed:
     def retranslateUIStyleSheet(self):
@@ -109,6 +107,16 @@ class MainWindow(QMainWindow):
 
     def onClickClearViewButton(self):
         self.imageFrame.clear()
+
+    def dropEvent(self, event):
+        print("Dropped!")
+        # pos = event.pos()
+        # text = event.mimeData().text()
+        # self.setText(text)
+        # event.acceptProposedAction()
+
+    # def dragEnterEvent(self, event):
+    #     print("Dragged!")
         
     def run(self):
         self.show()

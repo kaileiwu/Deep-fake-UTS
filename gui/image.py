@@ -11,7 +11,7 @@ class Image(QLabel):
         self.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
 
     def paintEvent(self, event):
-        if self.pixmap == self.pixmap:
+        if not self.pixmap.isNull():
             size = self.size()
             painter = QtGui.QPainter(self)
             point = QtCore.QPoint(0,0)
@@ -27,10 +27,8 @@ class Image(QLabel):
         self.repaint()
 
     def clear(self):
-        pass
-        # solve it later
-        # self.pixmap = None
-        # self.repaint()
+        self.pixmap = QtGui.QPixmap()
+        self.repaint()
 
 class ImageFrame(QWidget):
     def __init__(self, background=None):
