@@ -1,18 +1,17 @@
 # pip3 install PySide2
 
 from PySide2.QtWidgets import QPushButton, QLabel, QSpacerItem
-from PySide2.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout
+from PySide2.QtWidgets import QHBoxLayout, QVBoxLayout
 from PySide2.QtWidgets import QFileDialog, QSizePolicy, QFrame
 from PySide2.QtWidgets import QMainWindow, QWidget, QMenuBar
 
 from PySide2 import QtCore, QtGui
 
-from sys import argv
-
 from os import path
 
 # nearest modules
-from image import Image, ImageFrame
+from gui.image import Image, ImageFrame
+from model.process import process
 
 class MainWindow(QMainWindow):
     WIDTH = 800
@@ -28,8 +27,10 @@ class MainWindow(QMainWindow):
     # shows selectable files in QFileDialog
     fileFilter = 'PNG (*.png);;JPEG (*.jpg *.jpeg);;TIFF (*.tif)'
     
-    def __init__(self, parent=None):
+    def __init__(self, pyqt_app, parent=None):
         super(MainWindow, self).__init__()
+        self.pyqt_app = pyqt_app
+        self.currentImagePath = None
 
         # GUI definition
         self.centralWidget = QWidget(self)
@@ -46,6 +47,10 @@ class MainWindow(QMainWindow):
         self.openFileButton = QPushButton(self.centralWidget)
         self.openFileButton.setObjectName("openFileButton")
         self.verticalLayout.addWidget(self.openFileButton)
+
+        self.processFileButton = QPushButton(self.centralWidget)
+        self.processFileButton.setObjectName("processFileButton")
+        self.verticalLayout.addWidget(self.processFileButton)
 
         self.clearViewButton = QPushButton(self.centralWidget)
         self.clearViewButton.setObjectName("clearViewButton")
@@ -72,6 +77,9 @@ class MainWindow(QMainWindow):
         self.openFileButton.setMinimumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
         self.openFileButton.setMaximumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
 
+        self.processFileButton.setMinimumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
+        self.processFileButton.setMaximumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
+
         self.clearViewButton.setMinimumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
         self.clearViewButton.setMaximumSize(QtCore.QSize(self.BUTTON_WIDTH, self.BUTTON_HEIGHT))
 
@@ -85,15 +93,18 @@ class MainWindow(QMainWindow):
         
         self.setWindowTitle(_translate("MainWindow", "DeepFake detector"))
         self.openFileButton.setText(_translate("MainWindow", "Open File"))
+        self.processFileButton.setText(_translate("MainWindow", "Process"))
         self.clearViewButton.setText(_translate("MainWindow", "Clear"))
     
     # Custom palette if needed:
     def retranslateUIStyleSheet(self):
         self.openFileButton.setStyleSheet(self.ORANGE_COLOR)
+        self.processFileButton.setStyleSheet(self.ORANGE_COLOR)
         self.clearViewButton.setStyleSheet(self.ORANGE_COLOR)
 
     def setupConnections(self):
         self.openFileButton.clicked.connect(self.onClickOpenFileButton)
+        self.processFileButton.clicked.connect(self.onClickProcessFileButton)
         self.clearViewButton.clicked.connect(self.onClickClearViewButton)
 
     def onClickOpenFileButton(self):
@@ -104,24 +115,19 @@ class MainWindow(QMainWindow):
         if fileName[0] and path.exists(fileName[0]):
             # do something with the file
             self.imageFrame.setImage(fileName[0])
+            # Also, assign your image here, right now there is a path
+            self.currentImagePath = fileName[0]
+
+    def onClickProcessFileButton(self):
+        if self.currentImagePath:
+            self.imageFrame.setImage(process(self.currentImagePath))
+            return
+        print("No image to process")
 
     def onClickClearViewButton(self):
         self.imageFrame.clear()
+        self.currentImagePath = None
 
-    def dropEvent(self, event):
-        print("Dropped!")
-        # pos = event.pos()
-        # text = event.mimeData().text()
-        # self.setText(text)
-        # event.acceptProposedAction()
-
-    # def dragEnterEvent(self, event):
-    #     print("Dragged!")
-        
     def run(self):
         self.show()
-        pyqt_app.exec_()
-
-if __name__ == '__main__':
-    pyqt_app = QApplication(argv)
-    MainWindow().run()
+        self.pyqt_app.exec_()
