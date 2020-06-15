@@ -7,10 +7,8 @@ class VGG19:
     def __init__(self):
         super().__init__()
         path = os.path.abspath(os.path.dirname(__file__))
-        path = os.path.join(path, "./weights/weights.14-0.08.hdf5")
+        path = os.path.join(path, './weights/weights.14-0.08.hdf5')
         self.model = models.load_model(path)
 
-    def predict(self, image):
-        p = self.model.predict(image)
-        print('pred %f' % p)
-        return p
+    def predict(self, face):
+        return self.model.predict(face)

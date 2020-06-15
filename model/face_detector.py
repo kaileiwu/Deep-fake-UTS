@@ -1,5 +1,3 @@
-from matplotlib import pyplot
-from matplotlib.patches import Rectangle
 import pip
 import os
 import cv2
@@ -25,6 +23,7 @@ class FaceDetector:
         face_coords=[]
 
         faces = self.detector.detect_faces(image)
+        # print('Number of recognised faces %i' % len(faces))
         for face in faces:
             x, y, width, height = face['box']
 
@@ -44,10 +43,10 @@ class FaceDetector:
         for face in pred_faces:
             color = (0, 0, 0)
             if face[1] > 0.5:
-                print('REAL')
-                color = (0, 0, 255)
+                # print('REAL')
+                color = (0, 255, 0)
             else:
-                print('FAKE')
+                # print('FAKE')
                 color = (255, 0, 0)
 
             x1 = face[0][0]
@@ -55,4 +54,5 @@ class FaceDetector:
             x2 = face[0][0]+face[0][2]
             y2 = face[0][1]+face[0][2]
             out = cv2.rectangle(out, (x1, y1), (x2, y2), color, thickness=3)
+        
         return out
