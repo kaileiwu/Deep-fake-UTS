@@ -22,10 +22,10 @@ class MainWindow(QMainWindow):
     BUTTON_WIDTH = 90
 
     ORANGE_COLOR = "color: rgb(255, 153, 0);"
-    BACKGROUND_COLOR = "background-color:rgb(255, 153, 0);"
+    BACKGROUND_COLOR = "background-color: rgb(43, 45, 53);"
 
     # shows selectable files in QFileDialog
-    fileFilter = 'PNG (*.png);;JPEG (*.jpg *.jpeg);;TIFF (*.tif)'
+    fileFilter = 'Images (*.png *.jpg *.jpeg *.tif);;'
     
     def __init__(self, pyqt_app, parent=None):
         super(MainWindow, self).__init__()
@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         self.verticalLayout.addItem(spacer)
 
         self.imageFrame = ImageFrame(background=self.BACKGROUND_COLOR)
+        self.centralWidget.setStyleSheet(self.BACKGROUND_COLOR)
         self.horizontalLayout.addWidget(self.imageFrame)
 
         # description of all Widgets above:
