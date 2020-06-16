@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
     BACKGROUND_COLOR = "background-color: rgb(43, 45, 53);"
 
     # shows selectable files in QFileDialog
-    fileFilter = 'Images (*.png *.jpg *.jpeg *.tif);;'
+    fileFilter = 'Images (*.png *.jpg *.jpeg *.tif)'
     
     def __init__(self, pyqt_app, parent=None):
         super(MainWindow, self).__init__()
@@ -110,6 +110,8 @@ class MainWindow(QMainWindow):
 
     def onClickOpenFileButton(self):
         fileDialog = QFileDialog()
+        fileDialog.setNameFilters(self.fileFilter)
+        fileDialog.selectNameFilter(self.fileFilter)
         fileName = fileDialog.getOpenFileName(self,
                                               'Media Browser',
                                               filter=self.fileFilter)
