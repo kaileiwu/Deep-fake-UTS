@@ -5,6 +5,8 @@ The model in this application is VGG19 with [pre-trained weights, h5](https://gi
 The dataset is available on [Kaggle, follow the link to Hybrid dataset](https://www.kaggle.com/kylewu/hybrid-dataset-v2).
 It was assembled using three datasets: [Celebrities](https://www.kaggle.com/jessicali9530/celeba-dataset), [GAN-generated images](https://www.kaggle.com/tunguz/1-million-fake-faces/kernels) and [Deepfake competition dataset](https://www.kaggle.com/c/deepfake-detection-challenge/).
 
+Face detection works with [MTCNN](https://github.com/ipazc/mtcnn/tree/master/mtcnn).
+
 ### Installation
 Weights were uploaded with Git LFS, make sure you have Git LFS installed and initialised, follow the [instruction](https://git-lfs.github.com/) before you clone the project.
 
